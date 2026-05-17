@@ -77,7 +77,7 @@ const Register = () => {
 
     setIsEmailVerifying(true);
     try {
-      await api.post('/auth/send-otp', { email: formData.email });
+      await api.post('/api/auth/send-otp', { email: formData.email });
       setEmailOtpSent(true);
       setResendTimer(30);
       toast.success('OTP sent successfully');
@@ -97,7 +97,7 @@ const Register = () => {
 
     setIsEmailVerifying(true);
     try {
-      await api.post('/auth/verify-otp', {
+      await api.post('/api/auth/verify-otp', {
         email: formData.email,
         otp: emailOtp
       });
