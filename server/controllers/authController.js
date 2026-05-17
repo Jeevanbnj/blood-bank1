@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const nodemailer = require('nodemailer');
+const SibApiV3Sdk = require('sib-api-v3-sdk');
 const bcrypt = require('bcryptjs');
 
 const otpStore = new Map();
@@ -108,7 +108,7 @@ const sendOtp = async (req, res) => {
   try {
     const { email } = req.body;
     console.log("OTP route hit:", email);
-    console.log("Email config exists:", !!process.env.EMAIL_USER, !!process.env.EMAIL_PASS);
+    console.log("Email config exists:", !!process.env.BREVO_API_KEY);
     
     if (!email) return res.status(400).json({ message: 'Email is required' });
 
@@ -117,24 +117,25 @@ const sendOtp = async (req, res) => {
 
     otpStore.set(email, { otp, expiresAt });
 
-    const transporter = nodemailer.createTransport({
-      host: "smtp-relay.brevo.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
+    const defaultClient = SibApiV3Sdk.ApiClient.instance;
+    defaultClient.authentications['api-key'].apiKey = process.env.BREVO_API_KEY;
+
+    const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+
+    await apiInstance.sendTransacEmail({
+      sender: {
+        email: "bloodbekatago@gmail.com",
+        name: "BloodLink"
+      },
+      to: [{ email }],
+      subject: "BloodLink OTP",
+      htmlContent: `
+        <h2>Your OTP</h2>
+        <h1>${otp}</h1>
+        <p>Valid for 5 minutes</p>
+      `
     });
 
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: 'BloodLink - Registration OTP',
-      text: `Your OTP for BloodLink registration is: ${otp}. It is valid for 5 minutes.`
-    };
-
-    await transporter.sendMail(mailOptions);
     console.log("OTP email sent successfully to", email);
     res.status(200).json({ message: 'OTP sent successfully' });
   } catch (error) {
