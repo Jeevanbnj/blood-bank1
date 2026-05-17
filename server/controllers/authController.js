@@ -107,6 +107,9 @@ const getMe = async (req, res) => {
 const sendOtp = async (req, res) => {
   try {
     const { email } = req.body;
+    console.log("OTP route hit", email);
+    console.log("Email Config:", !!process.env.EMAIL_USER, !!process.env.EMAIL_PASS);
+    
     if (!email) return res.status(400).json({ message: 'Email is required' });
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -130,8 +133,10 @@ const sendOtp = async (req, res) => {
     };
 
     await transporter.sendMail(mailOptions);
+    console.log("OTP email sent successfully to", email);
     res.status(200).json({ message: 'OTP sent successfully' });
   } catch (error) {
+    console.error("OTP Send Error:", error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -142,6 +147,7 @@ const sendOtp = async (req, res) => {
 const verifyOtp = async (req, res) => {
   try {
     const { email, otp } = req.body;
+    console.log("Verify OTP route hit", email);
     if (!email || !otp) return res.status(400).json({ message: 'Email and OTP are required' });
 
     const storedData = otpStore.get(email);
@@ -159,8 +165,10 @@ const verifyOtp = async (req, res) => {
     }
 
     otpStore.delete(email);
+    console.log("OTP verified successfully for", email);
     res.status(200).json({ message: 'OTP verified successfully' });
   } catch (error) {
+    console.error("OTP Verify Error:", error);
     res.status(500).json({ message: error.message });
   }
 };
