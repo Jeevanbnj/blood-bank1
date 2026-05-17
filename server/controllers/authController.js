@@ -109,7 +109,7 @@ const sendOtp = async (req, res) => {
     const { email } = req.body;
     console.log("OTP route hit:", email);
     console.log("Email config exists:", !!process.env.BREVO_API_KEY);
-    
+
     if (!email) return res.status(400).json({ message: 'Email is required' });
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -124,7 +124,7 @@ const sendOtp = async (req, res) => {
 
     await apiInstance.sendTransacEmail({
       sender: {
-        email: "bloodbekatago@gmail.com",
+        email: "shettyharshithat@gmail.com",
         name: "BloodLink"
       },
       to: [{ email }],
@@ -202,7 +202,7 @@ const resetPassword = async (req, res) => {
 
     await User.updateOne(
       { email },
-      { 
+      {
         $set: { password: hashedPassword },
         $unset: { resetOtp: 1, resetOtpExpiry: 1 }
       }
