@@ -1,26 +1,31 @@
-const nodemailer = require('nodemailer');
+const SibApiV3Sdk = require('sib-api-v3-sdk');
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+const client = SibApiV3Sdk.ApiClient.instance;
+
+const apiKey = client.authentications['api-key'];
+apiKey.apiKey = process.env.BREVO_API_KEY;
+
+const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
 const sendEmail = async (options) => {
   try {
-    const mailOptions = {
-      from: `"Blood Donation System" <${process.env.EMAIL_USER}>`,
-      to: options.email,
+    await apiInstance.sendTransacEmail({
+      sender: {
+        email: "bloodlink@example.com",
+        name: "BloodLink"
+      },
+      to: [
+        {
+          email: options.email
+        }
+      ],
       subject: options.subject,
-      html: options.message,
-    };
+      htmlContent: options.message
+    });
 
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Message sent: %s', info.messageId);
+    console.log("Email sent successfully");
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.log("Brevo Error:", error);
   }
 };
 
