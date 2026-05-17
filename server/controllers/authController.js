@@ -107,8 +107,8 @@ const getMe = async (req, res) => {
 const sendOtp = async (req, res) => {
   try {
     const { email } = req.body;
-    console.log("OTP route hit", email);
-    console.log("Email Config:", !!process.env.EMAIL_USER, !!process.env.EMAIL_PASS);
+    console.log("OTP route hit:", email);
+    console.log("Email config exists:", !!process.env.EMAIL_USER, !!process.env.EMAIL_PASS);
     
     if (!email) return res.status(400).json({ message: 'Email is required' });
 
@@ -124,8 +124,8 @@ const sendOtp = async (req, res) => {
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
-  }
-});
+      }
+    });
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
@@ -138,7 +138,7 @@ const sendOtp = async (req, res) => {
     console.log("OTP email sent successfully to", email);
     res.status(200).json({ message: 'OTP sent successfully' });
   } catch (error) {
-    console.error("OTP Send Error:", error);
+    console.error("OTP Error:", error);
     res.status(500).json({ message: error.message });
   }
 };
