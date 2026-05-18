@@ -11,7 +11,7 @@ const sendEmail = async (options) => {
   try {
     await apiInstance.sendTransacEmail({
       sender: {
-        email: "shettyharshitha@gmail.com",
+        email: "bloodbekatago@gmail.com",
         name: "Bloodio"
       },
       to: [

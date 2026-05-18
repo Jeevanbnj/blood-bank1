@@ -124,7 +124,7 @@ const sendOtp = async (req, res) => {
 
     await apiInstance.sendTransacEmail({
       sender: {
-        email: "shettyharshithat@gmail.com",
+        email: "bloodbekatago@gmail.com",
         name: "Bloodio"
       },
       to: [{ email }],
