@@ -125,10 +125,10 @@ const sendOtp = async (req, res) => {
     await apiInstance.sendTransacEmail({
       sender: {
         email: "shettyharshithat@gmail.com",
-        name: "BloodLink"
+        name: "Bloodio"
       },
       to: [{ email }],
-      subject: "BloodLink OTP",
+      subject: "Bloodio OTP",
       htmlContent: `
         <h2>Your OTP</h2>
         <h1>${otp}</h1>

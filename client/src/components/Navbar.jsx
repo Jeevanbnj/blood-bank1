@@ -70,7 +70,7 @@ const Navbar = () => {
               <div className="bg-primary-100 p-2 rounded-lg">
                 <Droplet className="h-6 w-6 text-primary-600 fill-primary-600" />
               </div>
-              <span className="font-bold text-xl text-gray-900 tracking-tight">BloodLink</span>
+              <span className="font-bold text-xl text-gray-900 tracking-tight">Bloodio</span>
             </Link>
           </div>
 

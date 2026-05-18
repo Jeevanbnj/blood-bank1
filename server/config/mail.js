@@ -12,7 +12,7 @@ const sendEmail = async (options) => {
     await apiInstance.sendTransacEmail({
       sender: {
         email: "shettyharshitha@gmail.com",
-        name: "BloodLink"
+        name: "Bloodio"
       },
       to: [
         {
